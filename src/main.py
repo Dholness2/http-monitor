@@ -20,7 +20,7 @@ args = appParser.parse_args()
 display = ConsoleWriter()
 
 stats_proccessor = Processor()
-log_q = Q.PriorityQueue(1)
+log_q = Q.PriorityQueue(10)
 
 
 Log = namedtuple('Log', 'date logList')
@@ -32,10 +32,8 @@ Log = namedtuple('Log', 'date logList')
 # # if you encounter a "year is out of range" error the timestamp
 # # may be in milliseconds, try `ts /= 1000` in that case
 # print(datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S'))
-with open(args.FileName, newline='') as f:
-    reader = csv.reader(f)
-    next(reader)
-    log_producer = LogProducer(reader, log_q)
-    log_producer.start()
-    monitor = LogMonitor(display, stats_proccessor, log_q)
+monitor = LogMonitor(log_q)
+log_producer = LogProducer(log_q, args)
+log_producer.start()
+monitor.start()
 # monitor.start()
