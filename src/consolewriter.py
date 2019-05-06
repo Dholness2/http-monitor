@@ -1,2 +1,7 @@
+import art
+
 class ConsoleWriter(object):
-    pass
+
+    def start(self):
+        art.tprint("HTTP Monitor ", "rnd-xlarge")
+

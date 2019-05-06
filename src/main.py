@@ -28,6 +28,7 @@ stats_window = Stats(10)
 display = ConsoleWriter()
 monitor = LogMonitor(log_q, alert_window, stats_window)
 
+display.start()
 log_producer.start()
 monitor.start()
 

@@ -1,3 +1,5 @@
+import pandas as pd
+
 class Stats:
 
     def __init__(self, interval):
@@ -15,9 +17,13 @@ class Stats:
             self.current_window.append(item.logList)
 
     def process(self, item):
-        print(str(item.date) + ">" + str((self.off_set + self.interval)))
-        print("widow of last" + str(self.interval) + "interval")
-        print(self.current_window)
+      #  print(str(item.date) + ">" + str((self.off_set + self.interval)))
+        df = pd.DataFrame(self.current_window, columns=["remotehost","rfc931","authuser","date","request","status","bytes"])
+
+        # print(df.groupby('request')['request'].count())
+
+       #print(df.groupby('request')[["bytes", "date", "status"]].sum())
+       # print(self.current_window)
 
     def slide_window(self, item):
         self.current_window = []
