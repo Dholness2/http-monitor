@@ -1,5 +1,6 @@
+import pytest
+from unittest.mock import Mock
 from collections import namedtuple
-from unittest import TestCase
 
 from src.windows.traffic_alerts import TrafficAlerts
 
@@ -14,31 +15,27 @@ def test_items_load():
     return [log_a, log_b, log_c]
 
 
-class TestTrafficAlerts(TestCase):
+def test_put_log_publishes_alert_when_threshold_exceeds():
+    test_interval = 1
+    test_threshold = 1
+    test_display_mock = Mock()
+    test_window = TrafficAlerts(test_interval, test_display_mock , test_threshold)
 
-    def test_put_log(self):
-        test_interval = 1
-        test_threshold = 1
-        test_window = TrafficAlerts(test_interval , test_threshold)
-        for log in test_items_load():
-            test_window.put_log(log)
-        window_trigger_stamp = 1549573860 + 11
-        trigger_item = Log(window_trigger_stamp,
-                           ["10.0.0.2", "-", "apache", str(window_trigger_stamp), "GET /api/user HTTP/1.0", "200",
-                            "1234"])
+    _build_base_log_windows(test_window)
 
-        result = test_window.put_log(trigger_item)
+    window_trigger_stamp = 1549573860 + 11
+    trigger_item = Log(window_trigger_stamp,
+                       ["10.0.0.2", "-", "apache", str(window_trigger_stamp), "GET /api/user HTTP/1.0", "200",
+                        "1234"])
+    expected_result = 'High traffic generated an alert hits=3, triggerd at time2019-02-07T16:11:11 '
+    test_window.put_log(trigger_item)
 
-        assert result == ""
+    test_display_mock.print.assert_called_with(expected_result)
 
-    def test__is_log_rate_above_average(self):
-        self.fail()
+def test_put_log_publishes_alert_when_traffic_has_recovered():
 
-    def test_process(self):
-        self.fail()
 
-    def test__build_time_stamp(self):
-        self.fail()
 
-    def test_slide_window(self):
-        self.fail()
+def _build_base_log_windows(test_window):
+    for log in test_items_load():
+        test_window.put_log(log)
