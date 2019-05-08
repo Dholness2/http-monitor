@@ -9,6 +9,12 @@ from logproducer import LogProducer
 from windows.stats import Stats
 from windows.traffic_alerts import TrafficAlerts
 
+DEFAULT_STATS_WINDOW = 10
+
+DEFAULT_ALERT_WINDOW = 120
+
+BUFFER_SIZE = 10
+
 
 def main():
     appParser = Parser.build_log_parser()
@@ -21,12 +27,17 @@ def main():
     reader = csv.reader(open(fileName, newline=''))
     next(reader)
 
-    log_q = q.PriorityQueue(10)
+    log_q = q.PriorityQueue(BUFFER_SIZE)
     log_producer = LogProducer(log_q, reader)
 
     display = ConsoleWriter()
-    alert_window = TrafficAlerts(120, display)
-    stats_window = Stats(10)
+
+    alert_window_interval = args.interval if args.alert_interval else DEFAULT_ALERT_WINDOW
+    alert_window = TrafficAlerts(alert_window_interval, display)
+
+    stats_window_interval = args.interval if args.stats_interval else DEFAULT_STATS_WINDOW
+    stats_window = Stats(stats_window_interval, display)
+
     monitor = LogMonitor(log_q, alert_window, stats_window)
 
     display.start()

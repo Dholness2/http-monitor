@@ -21,10 +21,10 @@ class TrafficAlerts:
             self._process(item)
             self._slide_window(item)
         else:
-            self.alert_window[item.date - self.off_set] += 1  # Keeps count of items added in window via interval
+            self.alert_window[item.date - self.off_set] += 1  # Keeps count of items added in window via offset
 
     def _is_log_rate_above_average(self):
-        return sum(self.alert_window) / self.interval > self.threshold
+        return (sum(self.alert_window) / self.interval) > self.threshold
 
     def _is_below_log_rate(self):
         return not self._is_log_rate_above_average()
@@ -34,6 +34,7 @@ class TrafficAlerts:
             if self._is_log_rate_above_average():
                 self._trigger_alert(item)
         elif self._is_below_log_rate:
+            print("below rate")
             self._reset_recovery_mode(item)
 
     def _trigger_alert(self, item):
@@ -43,14 +44,15 @@ class TrafficAlerts:
         self._publish_alert(time_of_trigger, total_request_hits_window)
 
     def _publish_alert(self, time_of_trigger, total_request_hits_window):
-        self.display.print(
-            "High traffic generated an alert hits={0}, triggerd at time{1} ".format(total_request_hits_window,
-                                                                                    time_of_trigger))
+        alert_message = "High traffic generated an alert hits={0}, triggerd at time{1} "
+        self.display.print(alert_message.format(total_request_hits_window,
+                                                time_of_trigger))
 
     def _reset_recovery_mode(self, item):
         self.recovery_mode = False
         time_of_trigger = self._build_time_stamp(item)
-        self.display("Traffic has dropped below average rate at={0}".format(time_of_trigger))
+        recover_message = "Traffic has dropped below average rate at={0}"
+        self.display.print(recover_message.format(time_of_trigger))
 
     def _build_time_stamp(self, item):
         return datetime.datetime.fromtimestamp(item.date).isoformat()
