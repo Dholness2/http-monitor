@@ -34,7 +34,6 @@ class TrafficAlerts:
             if self._is_log_rate_above_average():
                 self._trigger_alert(item)
         elif self._is_below_log_rate:
-            print("below rate")
             self._reset_recovery_mode(item)
 
     def _trigger_alert(self, item):

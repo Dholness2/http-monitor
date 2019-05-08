@@ -6,8 +6,9 @@ from parser import Parser
 from consolewriter import ConsoleWriter
 from logmonitor import LogMonitor
 from logproducer import LogProducer
+from windows.processor import Processor
 from windows.stats import Stats
-from windows.traffic_alerts import TrafficAlerts
+from windows.trafficalerts import TrafficAlerts
 
 DEFAULT_STATS_WINDOW = 10
 
@@ -32,16 +33,18 @@ def main():
 
     display = ConsoleWriter()
 
-    alert_window_interval = args.interval if args.alert_interval else DEFAULT_ALERT_WINDOW
-    alert_window = TrafficAlerts(alert_window_interval, display)
+    alert_window_interval = args.AlertInterval if args.AlertInterval else DEFAULT_ALERT_WINDOW
+    alert_window = TrafficAlerts(120, display)
 
-    stats_window_interval = args.interval if args.stats_interval else DEFAULT_STATS_WINDOW
-    stats_window = Stats(stats_window_interval, display)
+    stats_window_interval = args.StatsInterval if args.StatsInterval else DEFAULT_STATS_WINDOW
+    stats_window = Stats(10, Processor(), display)
 
     monitor = LogMonitor(log_q, alert_window, stats_window)
 
     display.start()
+
     log_producer.start()
+
     monitor.start()
 
 

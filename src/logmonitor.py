@@ -15,5 +15,3 @@ class LogMonitor(threading.Thread):
                 item = self.q.get()
                 self.traffic_alert_window.put_log(item)
                 self.stats_window.put_log(item)
-        return
-

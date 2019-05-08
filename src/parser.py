@@ -9,7 +9,8 @@ class Parser:
     @staticmethod
     def build_log_parser():
         log_monitor_args = [AppArgs('FileName', str, 'Provide file name of csv logs'),
-                            AppArgs('--AlertInterval', int, 'provide alert interval in seconds ex. 10 would equal 10s')]
+                            AppArgs('--AlertInterval', int, 'provide alert interval in seconds ex. 10 would equal 10s'),
+                            AppArgs('--StatsInterval', int, 'provide stats interval in seconds ex. 10 would equal 10s')]
         return Parser._create_parser(log_monitor_args)
 
     @staticmethod

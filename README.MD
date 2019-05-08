@@ -13,9 +13,15 @@ To Run APP
 ----------
 
     $ cd /httpMonitor
-    $ pipenv intstall
     $ pipenv shell
+    $ pipenv install
     $ pipenv run python main.py sample_csv.csv
+ 
+ To Run Test
+ -------------
+   $ pipenv shell
+   $ pipenv pytest 
+   
 
 App Help, Optional Flags
 -------------------

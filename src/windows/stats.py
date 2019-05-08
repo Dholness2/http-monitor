@@ -11,8 +11,8 @@ class Stats:
         if self.off_set is None:
             self.off_set = item.date
         if item.date > (self.off_set + self.interval):
-            stats = self.processor.build_log_stats(item)
-            self.display.print(stats)
+            stats = self.processor.build_log_stats(self.current_window)
+            self.display.print_titled_values(stats)
             self._slide_window(item)
         else:
             self.current_window.append(item.logList)
