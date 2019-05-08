@@ -44,14 +44,14 @@ class TrafficAlerts:
 
     def _publish_alert(self, time_of_trigger, total_request_hits_window):
         alert_message = "High traffic generated an alert hits={0}, triggerd at time{1} "
-        self.display.print(alert_message.format(total_request_hits_window,
+        self.display.print_alert(alert_message.format(total_request_hits_window,
                                                 time_of_trigger))
 
     def _reset_recovery_mode(self, item):
         self.recovery_mode = False
         time_of_trigger = self._build_time_stamp(item)
         recover_message = "Traffic has dropped below average rate at={0}"
-        self.display.print(recover_message.format(time_of_trigger))
+        self.display.print_recovery(recover_message.format(time_of_trigger))
 
     def _build_time_stamp(self, item):
         return datetime.datetime.fromtimestamp(item.date).isoformat()

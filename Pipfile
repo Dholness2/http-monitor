@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 art = "==3.5"
 pandas = "*"
+termcolor = "*"
 
 [dev-packages]
 pytest = "*"

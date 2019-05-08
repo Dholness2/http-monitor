@@ -1,14 +1,21 @@
 import art
+from termcolor import cprint
 
 
 class ConsoleWriter(object):
 
     def start(self):
-        art.tprint("HTTP Monitor ", "rnd-xlarge")
+        art.tprint("HTTP Monitor ", chr_ignore=True)
 
-    def print(self, vals):
+    def print_alert(self, vals):
         print("------------------------------------\n")
-        print(vals)
+        # print(vals)
+        cprint(vals, 'white', 'on_red')
+        print("------------------------------------\n")
+
+    def print_recovery(self, vals):
+        print("------------------------------------\n")
+        cprint(vals, 'white', 'on_green')
         print("------------------------------------\n")
 
     def print_titled_values(self, titled_values):
@@ -16,4 +23,3 @@ class ConsoleWriter(object):
             print(key)
             print("------------------------------------\n")
             print(val + "\n")
-
