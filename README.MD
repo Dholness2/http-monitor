@@ -32,13 +32,17 @@ App Help, Optional Flags
 
 Project Overview
 -----------------
-  For this project to avoid loading the log file in memory,
-  I leverage a buffered approach reading only one line at a time using a producer/Consumer design.
-  
-  The file contains a form simulating latency that we would see in a real world exmaple. In this example csv early timestamp logs are read after later times stamp logs at some instances since order is
-  not guaranteed. To resolve this I used a Priority queue to ensure to some degree consumers are seeing the earliest log on the queue.
-  
-  For processing the stats I used the Pandas library to arranges stats on current logs being accessed in the
+  For this project to avoid loading the log file in memory, I leverage a buffered approach; reading only one line at a time using a Producer/Consumer design.
+The sample csv file contains a small simulation of the type of  latency that we may  see in a real world example. In this example csv, early timestamp logs are read after later times stamp logs at some instances since order is not guaranteed. To resolve this a priority queue is initialized to ensure to some degree, consumers are seeing the earliest log on the queue.
+For processing the data Pandas library is used to process statistics on the current window interval’s logs. In this  example we leverage the concept of “Python as Glue” and delegate the heavy aggregations to Padas performant C based libraries for the statistical analysis.
+ 
+To Improve the application logic, I would create a Log object with its own sorting logic, rather than tulpes. This would make the producer and consumers more extensible. For the log monitor I would also take in multiple alert window types. The current application assumes to window types. This would be a simple change since the log monitor doesn’t have any direct depencines on window minus the assumed interface function of “put_log” shared by the two window types.
+ 
+From a scalability standpoint, if we wanted to monitor traffic across multiple application instances we make want to leverage a distributed queue to support streaming of logs.
+This would add to resiliency to our application. If the aoo node would shutdown, the latest logs would be on the queue service and not lost in memory.
+ 
+Instead of pandas we could use an even more performant processor like a spark cluster for running the aggregations in Real Time.
+
   
   
    
