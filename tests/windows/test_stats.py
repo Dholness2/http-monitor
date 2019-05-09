@@ -25,7 +25,7 @@ def test_put_log_publishes_stats_after_threshold_is_passed():
     trigger_item = factory.create_trigger_log(window_trigger_stamp)
     test_window.put_log(trigger_item)
 
-    test_display_mock.print.assert_called_with(expected_response)
+    test_display_mock.print_titled_values.assert_called_with(expected_response)
 
 
 def test_put_log_does_not_publish_when_threshold_is_not_passed():

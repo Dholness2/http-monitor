@@ -21,7 +21,7 @@ def test_put_log_publishes_alert_when_threshold_exceeds():
     expected_result = 'High traffic generated an alert hits=3, triggerd at time2019-02-07T16:11:11 '
     test_window.put_log(trigger_item)
 
-    test_display_mock.print.assert_called_with(expected_result)
+    test_display_mock.print_alert.assert_called_with(expected_result)
 
 
 def test_put_log_publishes_alert_when_traffic_has_recovered():
@@ -38,4 +38,4 @@ def test_put_log_publishes_alert_when_traffic_has_recovered():
     test_window.recovery_mode = True
     test_window.put_log(trigger_recover_item)
 
-    test_display_mock.print.assert_called_with(expected_result)
+    test_display_mock.print_recovery.assert_called_with(expected_result)

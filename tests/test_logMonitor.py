@@ -1,3 +1,4 @@
+import time
 from collections import namedtuple
 from queue import PriorityQueue
 from unittest.mock import Mock
@@ -15,6 +16,8 @@ def test_run_appends_rows_to_q_as_log():
     mock_window = Mock()
     test_monitor = LogMonitor(test_q, mock_window, mock_window)
 
-    test_monitor.run()
+    test_monitor.start()
+    time.sleep(2)
+    test_monitor.stop()
 
     mock_window.put_log.assert_called_with(test_log)
