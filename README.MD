@@ -46,7 +46,7 @@ App Help, Optional Flags
                         provide stats interval in seconds ex. 10 would equal
                         10s
 
-
+ ![Demo](demo/demo.gif)
   
   
    
